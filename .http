@@ -1,6 +1,31 @@
+### Variables
+@baseUrl = http://localhost:3000
+
+@contentType = application/json
+
 # The basic request
+http://{{baseUrl}}
 
-http://localhost:3000
+GET {{baseUrl}}/tasks
 
-GET http://localhost:3000/tasks
+GET {{baseUrl}}/tasks/5a4d76d5-e5e6-4709-9f45-b5b3cac5f00d
 
+### Create new task
+POST {{baseUrl}}/tasks
+Content-Type: {{contentType}}
+
+{
+    "title": "Learn NestJS",
+    "description": "Complete the NestJS course",
+    "status": "OPEN"
+}
+
+### Validation Error - status is incorrect
+POST {{baseUrl}}/tasks
+Content-Type: {{contentType}}
+
+{
+    "title": "Learn NestJS",
+    "description": "Complete the NestJS course",
+    "status": "XXXX"
+}
