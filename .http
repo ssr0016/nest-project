@@ -3,12 +3,12 @@
 
 @contentType = application/json
 
-# The basic request
+### The basic request
 http://{{baseUrl}}
 
 GET {{baseUrl}}/tasks
 
-GET {{baseUrl}}/tasks/5a4d76d5-e5e6-4709-9f45-b5b3cac5f00d
+GET {{baseUrl}}/tasks/2723bd7b-608b-45cb-bcc3-115d448c183f
 
 ### Create new task
 POST {{baseUrl}}/tasks
@@ -29,3 +29,14 @@ Content-Type: {{contentType}}
     "description": "Complete the NestJS course",
     "status": "XXXX"
 }
+
+### Update the task status
+PATCH  {{baseUrl}}/tasks/c2ea4b49-3a2e-40c4-a49e-5e35e93dc9c9/status
+Content-Type: {{contentType}}
+
+{
+   "status": "DONE"
+}
+
+### Deleting a task
+DELETE  {{baseUrl}}/tasks/959c1df3-145e-4266-8ae1-8f7a59199c5a
