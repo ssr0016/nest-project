@@ -22,7 +22,16 @@ Content-Type: {{contentType}}
 {
     "title": "Learn NestJSs",
     "description": "Complete the NestJS courses",
-    "status": "DONE"
+    "status": "OPEN"
+}
+
+### Validation error - status is incorrect
+POST {{baseUrl}}/tasks
+Content-Type: {{contentType}}
+
+{
+    "title": "Learn NestJSs",
+    "status": "XXX"
 }
 
 ### Set the task id 
@@ -31,6 +40,7 @@ Content-Type: {{contentType}}
 ### Update the task status
 PATCH {{baseUrl}}/tasks/{{taskId}}
 Content-Type: {{contentType}}
+
 {
    "status": "IN_PROGRESS"
 }
