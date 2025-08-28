@@ -1,24 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { ITask, TaskStatus } from './task.model';
+import { ITask } from './task.model';
 import { CreateTaskDto } from './create-task.dto';
 import { randomUUID } from 'crypto';
+import { UpdateTaskDto } from './update-task.dto';
+import { TaskStatus } from './task.model';
+import { WrongTaskStatusException } from './exceptions/wrong-task-status.exceptions';
 
 @Injectable()
 export class TasksService {
-  private tasks: ITask[] = [
-    {
-      id: '1',
-      title: 'Task 1',
-      description: 'Description 1',
-      status: TaskStatus.OPEN,
-    },
-    {
-      id: '2',
-      title: 'Task 2',
-      description: 'Description 2',
-      status: TaskStatus.IN_PROGRESS,
-    },
-  ];
+  private tasks: ITask[] = [];
 
   public findAll(): ITask[] {
     return this.tasks;
@@ -38,7 +28,34 @@ export class TasksService {
     return task;
   }
 
-  public deleteTask(id: string): void {
-    this.tasks = this.tasks.filter((task) => task.id !== id);
+  public updateTask(task: ITask, updateTaskDto: UpdateTaskDto): ITask {
+    if (
+      updateTaskDto.status &&
+      !this.isValidStatusTransition(task.status, updateTaskDto.status)
+    ) {
+      throw new WrongTaskStatusException();
+    }
+
+    Object.assign(task, updateTaskDto);
+    return task;
+  }
+
+  private isValidStatusTransition(
+    currentStatus: TaskStatus,
+    newStatus: TaskStatus,
+  ): boolean {
+    const statusOrder = [
+      TaskStatus.OPEN,
+      TaskStatus.IN_PROGRESS,
+      TaskStatus.DONE,
+    ];
+
+    return statusOrder.indexOf(currentStatus) <= statusOrder.indexOf(newStatus);
+  }
+
+  public deleteTask(task: ITask): void {
+    this.tasks = this.tasks.filter(
+      (filterTasked) => filterTasked.id !== task.id,
+    );
   }
 }
