@@ -14,6 +14,7 @@ import { ConfigService } from '@nestjs/config';
 import { TypedConfigService } from './config/typed-config.service';
 import { Task } from './tasks/task.entity';
 import { User } from './users/user.entity';
+import { TaskLabel } from './tasks/task-label.entity';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { User } from './users/user.entity';
       inject: [ConfigService],
       useFactory: (ConfigService: TypedConfigService) => ({
         ...ConfigService.get('database'),
-        entities: [Task, User],
+        entities: [Task, User, TaskLabel],
       }),
     }),
 
