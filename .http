@@ -22,7 +22,8 @@ Content-Type: {{contentType}}
 {
     "title": "Learn NestJSs",
     "description": "Complete the NestJS courses",
-    "status": "OPEN"
+    "status": "OPEN",
+    "userId": "537dac0c-0a3f-4215-8c5d-fc2028b3a86a"
 }
 
 ### Validation error - status is incorrect

@@ -1,6 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { TaskStatus } from './task.model';
+import { User } from '../users/user.entity';
 
+// one-to-many
+// User that has many Tasks
+// 1) User - user - id
+// 2) Task - task - userId
 @Entity()
 export class Task {
   @PrimaryGeneratedColumn('uuid')
@@ -25,4 +30,10 @@ export class Task {
     default: TaskStatus.OPEN,
   })
   status: TaskStatus;
+
+  @Column()
+  userId: string;
+
+  @ManyToOne(() => User, (user) => user.tasks, { nullable: false })
+  user: User;
 }
