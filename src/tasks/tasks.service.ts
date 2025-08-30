@@ -59,7 +59,6 @@ export class TasksService {
       this.labelsRepository.create(label),
     );
     task.labels = [...task.labels, ...labels];
-
     return await this.tasksRepository.save(task);
   }
 

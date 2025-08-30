@@ -57,3 +57,13 @@ Content-Type: {{contentType}}
 ### Delete a task
 DELETE {{baseUrl}}/tasks/{{taskId}}
 Content-Type: {{contentType}}
+
+### Add specific labels to task
+# @name addLabels
+POST {{baseUrl}}/tasks/{{taskId}}/labels
+Content-Type: {{contentType}}
+
+[
+    {"name": "add jwt"},
+    {"name": "fixing login"}
+]
