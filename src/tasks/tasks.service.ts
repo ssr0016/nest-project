@@ -59,15 +59,39 @@ export class TasksService {
     task: Task,
     labelDtos: CreateTaskLabelDto[],
   ): Promise<Task> {
-    const labels = labelDtos.map((label) =>
-      this.labelsRepository.create(label),
+    // 1) Deduplicate DTOs - DONE
+    // 2) Get existing names - DONE
+    // 3) New labels aren't already existing ones - DONE
+    // 4) We save new ones, only if there are any real new ones - DONE
+    const names = new Set(task.labels.map((label) => label.name));
+    const labels = this.getUniqueLabels(labelDtos)
+      .filter((label) => !names.has(label.name))
+      .map((label) => this.labelsRepository.create(label));
+
+    if (labels.length) {
+      task.labels = [...task.labels, ...labels];
+      return await this.tasksRepository.save(task);
+    }
+
+    return task;
+  }
+
+  public async removeLabels(
+    task: Task,
+    labelsToRemove: string[],
+  ): Promise<Task> {
+    // 1. Remove existing labels from labels array
+    // 2. Ways to solve
+    // a) Remove labels from task -> labels and save() the Task
+    // b) Query Builder - SQL that deletes labels
+    task.labels = task.labels.filter(
+      (label) => !labelsToRemove.includes(label.name),
     );
-    task.labels = [...task.labels, ...labels];
     return await this.tasksRepository.save(task);
   }
 
   public async deleteTask(task: Task): Promise<void> {
-    await this.tasksRepository.delete(task);
+    await this.tasksRepository.remove(task);
   }
 
   private isValidStatusTransition(
