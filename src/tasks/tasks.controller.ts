@@ -5,6 +5,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Get,
   Delete,
   HttpCode,
@@ -18,13 +19,15 @@ import { UpdateTaskDto } from './update-task.dto';
 import { WrongTaskStatusException } from './exceptions/wrong-task-status.exceptions';
 import { Task } from './task.entity';
 import { CreateTaskLabelDto } from './create-task-label.dto';
+import { FindTaskParams } from './find-task.params';
+
 @Controller('tasks')
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
   @Get()
-  public async findAll(): Promise<Task[]> {
-    return await this.tasksService.findAll();
+  public async findAll(@Query() filters: FindTaskParams): Promise<Task[]> {
+    return await this.tasksService.findAll(filters);
   }
 
   @Get('/:id')

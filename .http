@@ -7,8 +7,14 @@
 GET {{baseUrl}}
 
 ### Get all tasks
+# @name getAllTasks
 GET {{baseUrl}}/tasks
 Content-Type: {{contentType}}
+
+### Get all in progress tasks
+# @name getAllInProgress
+GET {{baseUrl}}/tasks?status=IN_PROGRESS
+
 
 ### Get one task
 GET {{baseUrl}}/tasks/{{taskId}}
@@ -44,13 +50,13 @@ Content-Type: {{contentType}}
 @taskId = {{ createTask.response.body.id }}
 
 ### Update the task status
-PATCH {{baseUrl}}/tasks/{{taskId}}
+PATCH {{baseUrl}}/tasks/dd53b355-d13b-43bf-abee-a4eadc234f37
 Content-Type: {{contentType}}
 
 {
    "status": "IN_PROGRESS",
    "labels": [{
-    "name": "done"
+    "name": "PRIORITY"
    }]
 }
 
