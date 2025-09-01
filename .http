@@ -18,7 +18,7 @@ GET {{baseUrl}}/tasks?status=IN_PROGRESS
 
 ### Get all with search query
 # @name getAllWithSearch
-GET {{baseUrl}}/tasks?search=Learn Postgresql
+GET {{baseUrl}}/tasks?search=Postgresql
 
 
 

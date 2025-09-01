@@ -3,7 +3,7 @@ import { CreateTaskDto } from './create-task.dto';
 import { UpdateTaskDto } from './update-task.dto';
 import { TaskStatus } from './task.model';
 import { WrongTaskStatusException } from './exceptions/wrong-task-status.exceptions';
-import { FindOptionsWhere, Like, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Task } from './task.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTaskLabelDto } from './create-task-label.dto';
@@ -24,23 +24,42 @@ export class TasksService {
     filters: FindTaskParams,
     pagination: PaginationParams,
   ): Promise<[Task[], number]> {
-    const where: FindOptionsWhere<Task> = {};
+    const query = this.tasksRepository
+      .createQueryBuilder('task')
+      .leftJoinAndSelect('task.labels', 'labels');
 
     if (filters.status) {
-      where.status = filters.status;
+      query.andWhere('task.status = :status', { status: filters.status });
     }
 
-    if (filters.search?.trim) {
-      where.title = Like(`%${filters.search}%`);
-      where.description = Like(`%${filters.search}%`);
+    if (filters.search) {
+      query.andWhere(
+        'task.title ILIKE :search OR task.description ILIKE :search',
+        { search: `%${filters.search}%` },
+      );
     }
 
-    return await this.tasksRepository.findAndCount({
-      where,
-      relations: ['labels'],
-      skip: pagination.offset,
-      take: pagination.limit,
-    });
+    query.skip(pagination.offset).take(pagination.limit);
+
+    return query.getManyAndCount();
+
+    // const where: FindOptionsWhere<Task> = {};
+
+    // if (filters.status) {
+    //   where.status = filters.status;
+    // }
+
+    // if (filters.search?.trim) {
+    //   where.title = Like(`%${filters.search}%`);
+    //   where.description = Like(`%${filters.search}%`);
+    // }
+
+    // return await this.tasksRepository.findAndCount({
+    //   where,
+    //   relations: ['labels'],
+    //   skip: pagination.offset,
+    //   take: pagination.limit,
+    // });
   }
 
   public async findOne(id: string): Promise<Task | null> {
