@@ -50,7 +50,7 @@ Content-Type: {{contentType}}
 @taskId = {{ createTask.response.body.id }}
 
 ### Update the task status
-PATCH {{baseUrl}}/tasks/dd53b355-d13b-43bf-abee-a4eadc234f37
+PATCH {{baseUrl}}/tasks/{{taskId}}
 Content-Type: {{contentType}}
 
 {
