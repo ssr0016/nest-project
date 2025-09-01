@@ -39,27 +39,13 @@ export class TasksService {
       );
     }
 
+    if (filters.labels?.length) {
+      query.andWhere('labels.name IN (:...names)', { names: filters.labels });
+    }
+
     query.skip(pagination.offset).take(pagination.limit);
 
     return query.getManyAndCount();
-
-    // const where: FindOptionsWhere<Task> = {};
-
-    // if (filters.status) {
-    //   where.status = filters.status;
-    // }
-
-    // if (filters.search?.trim) {
-    //   where.title = Like(`%${filters.search}%`);
-    //   where.description = Like(`%${filters.search}%`);
-    // }
-
-    // return await this.tasksRepository.findAndCount({
-    //   where,
-    //   relations: ['labels'],
-    //   skip: pagination.offset,
-    //   take: pagination.limit,
-    // });
   }
 
   public async findOne(id: string): Promise<Task | null> {

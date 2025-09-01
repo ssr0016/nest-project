@@ -18,8 +18,12 @@ GET {{baseUrl}}/tasks?status=IN_PROGRESS
 
 ### Get all with search query
 # @name getAllWithSearch
-GET {{baseUrl}}/tasks?search=Postgresql
+GET {{baseUrl}}/tasks?search=com
 
+
+### Get all filtered
+# @name getAllFilteredByLabels
+GET {{baseUrl}}/tasks?search=com
 
 
 ### Get one task
