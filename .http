@@ -8,12 +8,18 @@ GET {{baseUrl}}
 
 ### Get all tasks
 # @name getAllTasks
-GET {{baseUrl}}/tasks?limit=2
+GET {{baseUrl}}/tasks?limit=2&offset=2
 Content-Type: {{contentType}}
 
 ### Get all in progress tasks
 # @name getAllInProgress
 GET {{baseUrl}}/tasks?status=IN_PROGRESS
+
+
+### Get all with search query
+# @name getAllWithSearch
+GET {{baseUrl}}/tasks?search=Learn Postgresql
+
 
 
 ### Get one task
