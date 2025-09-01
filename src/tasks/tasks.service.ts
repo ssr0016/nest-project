@@ -40,10 +40,19 @@ export class TasksService {
     }
 
     if (filters.labels?.length) {
-      query.andWhere('labels.name IN (:...names)', { names: filters.labels });
+      const subQuery = query
+        .subQuery()
+        .select('labels.taskId')
+        .from('task_label', 'labels')
+        .where('labels.name IN (:...names)', { names: filters.labels })
+        .getQuery();
+
+      query.andWhere(`task.id IN (${subQuery})`);
     }
 
     query.skip(pagination.offset).take(pagination.limit);
+
+    console.log(query.getSql());
 
     return query.getManyAndCount();
   }

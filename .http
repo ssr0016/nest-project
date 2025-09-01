@@ -8,7 +8,7 @@ GET {{baseUrl}}
 
 ### Get all tasks
 # @name getAllTasks
-GET {{baseUrl}}/tasks?limit=2&offset=2
+GET {{baseUrl}}/tasks
 Content-Type: {{contentType}}
 
 ### Get all in progress tasks
@@ -23,7 +23,7 @@ GET {{baseUrl}}/tasks?search=com
 
 ### Get all filtered
 # @name getAllFilteredByLabels
-GET {{baseUrl}}/tasks?search=com
+GET {{baseUrl}}/tasks?labels=PRIORITY
 
 
 ### Get one task
