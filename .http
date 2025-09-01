@@ -26,6 +26,10 @@ GET {{baseUrl}}/tasks?search=com
 GET {{baseUrl}}/tasks?labels=PRIORITY
 
 
+### Get all sorted
+# @name getAllSorted
+GET {{baseUrl}}/tasks?sortBy=status&sortOrder=ASC
+
 ### Get one task
 GET {{baseUrl}}/tasks/{{taskId}}
 Content-Type: {{contentType}}
