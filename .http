@@ -8,7 +8,7 @@ GET {{baseUrl}}
 
 ### Get all tasks
 # @name getAllTasks
-GET {{baseUrl}}/tasks
+GET {{baseUrl}}/tasks?limit=2
 Content-Type: {{contentType}}
 
 ### Get all in progress tasks
@@ -26,8 +26,8 @@ POST {{baseUrl}}/tasks
 Content-Type: {{contentType}}
 
 {
-    "title": "Learn NestJSs",
-    "description": "Complete the NestJS courses",
+    "title": "Learn Clean Architecture",
+    "description": "Complete Clean Architecture courses",
     "status": "OPEN",
     "userId": "537dac0c-0a3f-4215-8c5d-fc2028b3a86a",
     "labels": [
