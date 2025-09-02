@@ -39,8 +39,6 @@ export class TasksController {
       meta: {
         total,
         ...pagination,
-        // offset: pagination.offset,
-        // limit: pagination.limit,
       },
     };
   }

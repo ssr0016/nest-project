@@ -38,4 +38,20 @@ describe('PasswordService', () => {
     expect(bcrypt.hash).toHaveBeenCalledWith(password, 10);
     expect(result).toBe(mockHash);
   });
+
+  it('should correctly verify password', async () => {
+    // 1) Mock bcrypt.compare()
+    // 2) Mock the resolve value
+    // 3) Call the service method - verify()
+    // 4) bcrypt.compare() was called with specific arguments
+    // 5) we verify if the service method returned what bcrypt compare() did
+  });
+
+  it('should fail on incorrect password', async () => {
+    // 1) Mock bcrypt.compare() - fails!
+    // 2) Mock the resolve value
+    // 3) Call the service method - verify()
+    // 4) bcrypt.compare() was called with specific arguments
+    // 5) we verify if the service method returned what bcrypt compare() did
+  });
 });
