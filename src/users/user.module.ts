@@ -5,6 +5,7 @@ import { User } from './user.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypedConfigService } from 'src/config/typed-config.service';
 import { AuthConfig } from 'src/config/auth.config';
+import { PasswordService } from './password/password.service';
 
 @Module({
   imports: [
@@ -20,5 +21,6 @@ import { AuthConfig } from 'src/config/auth.config';
       }),
     }),
   ],
+  providers: [PasswordService],
 })
 export class UsersModule {}
