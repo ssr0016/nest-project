@@ -11,10 +11,6 @@ describe('CreateUserDto', () => {
     dto.password = '123456A#';
   });
 
-  it('2+2=4', () => {
-    expect(2).toBe(2); //Assertion
-  });
-
   it('should validate complete valid data', async () => {
     // Arrange
     // Act
@@ -35,17 +31,34 @@ describe('CreateUserDto', () => {
     expect(errors[0].constraints).toHaveProperty('isEmail');
   });
 
-  // 1) At least 1 uppercase letter
-  // 2) At least 1 number
-  // 3) Atleast 1 special character
-  it('should return specific validation messages', async () => {
-    dto.password = '123456';
+  const testPassword = async (password: string, message: string) => {
+    dto.password = password;
 
     const errors = await validate(dto);
-
     const passwordError = errors.find((error) => error.property === 'password');
     expect(passwordError).not.toBeUndefined();
     const messages = Object.values(passwordError?.constraints ?? {});
-    expect(messages).toContain('must contain at least 1 special character');
+    expect(messages).toContain(message);
+  };
+
+  // 1) At least 1 uppercase letter
+  // 2) At least 1 number
+  // 3) Atleast 1 special character
+  it('should fail without 1 uppercase letter', async () => {
+    await testPassword(
+      'abc123#',
+      'Password must contain at least 1 uppercase letter',
+    );
+  });
+
+  it('should fail without at least 1 number', async () => {
+    await testPassword('Abcdfe#', 'Password must contain at least 1 number');
+  });
+
+  it('should fail without at least 1 special character', async () => {
+    await testPassword(
+      'AbcdfeA1',
+      'Password must contain at least 1 special character',
+    );
   });
 });
