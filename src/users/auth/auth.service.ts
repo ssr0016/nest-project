@@ -28,6 +28,11 @@ export class AuthService {
 
     return user;
   }
+
+  private generateToken(user: User): string {
+    const payload = { sub: user.id, name: user.name };
+    return this.jwtService.sign(payload);
+  }
 }
 
 // 1) user registration
