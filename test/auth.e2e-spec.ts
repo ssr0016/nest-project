@@ -23,8 +23,8 @@ describe('AppController (e2e)', () => {
     name: 'Test User',
   };
 
-  it('/auth/register (POST)', () => {
-    request(testSetup.app.getHttpServer())
+  it('/auth/register (POST)', async () => {
+    await request(testSetup.app.getHttpServer())
       .post('/auth/register')
       .send(testUser)
       .expect(201)
@@ -33,5 +33,16 @@ describe('AppController (e2e)', () => {
         expect(res.body.name).toBe(testUser.name);
         expect(res.body).not.toHaveProperty('password');
       });
+  });
+
+  it('/auth/register (POST) - duplicate email', async () => {
+    await request(testSetup.app.getHttpServer())
+      .post('/auth/register')
+      .send(testUser);
+
+    return await request(testSetup.app.getHttpServer())
+      .post('/auth/register')
+      .send(testUser)
+      .expect(409);
   });
 });
