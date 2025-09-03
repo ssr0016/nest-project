@@ -1,6 +1,7 @@
 import request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { TestSetup } from './utils/test-setup';
+import { response } from 'express';
 
 describe('AppController (e2e)', () => {
   let testSetup: TestSetup;
@@ -38,11 +39,32 @@ describe('AppController (e2e)', () => {
   it('/auth/register (POST) - duplicate email', async () => {
     await request(testSetup.app.getHttpServer())
       .post('/auth/register')
-      .send(testUser);
+      .send(testUser)
+      .expect(201);
 
     return await request(testSetup.app.getHttpServer())
       .post('/auth/register')
-      .send(testUser)
+      .send({
+        email: testUser.email,
+        password: testUser.password,
+      })
       .expect(409);
+  });
+
+  it('/auth/login (POST)', async () => {
+    // Register the test user first
+    await request(testSetup.app.getHttpServer())
+      .post('/auth/register')
+      .send(testUser);
+
+    const response = await request(testSetup.app.getHttpServer())
+      .post('/auth/login')
+      .send({
+        email: testUser.email,
+        password: testUser.password,
+      });
+
+    expect(response.statusCode).toBe(201);
+    expect(response.body.accessToken).toBeDefined();
   });
 });
