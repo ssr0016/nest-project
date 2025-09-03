@@ -31,7 +31,7 @@ describe('AppController (e2e)', () => {
       .expect((res) => {
         expect(res.body.email).toBe(testUser.email);
         expect(res.body.name).toBe(testUser.name);
-        expect(res.body.password).not.toHaveProperty('password');
+        expect(res.body).not.toHaveProperty('password');
       });
   });
 });

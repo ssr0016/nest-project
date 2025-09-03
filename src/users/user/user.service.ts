@@ -25,10 +25,12 @@ export class UserService {
       createUserDto.password,
     );
 
-    return await this.userRepository.create({
+    const user = this.userRepository.create({
       ...createUserDto,
       password: hashedPassword,
     });
+
+    return await this.userRepository.save(user);
   }
 
   public async findOne(id: string): Promise<User | null> {
