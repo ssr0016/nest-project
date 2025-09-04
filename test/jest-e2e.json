@@ -6,6 +6,8 @@
     "^.+\\.(t|j)s$": "ts-jest"
   },
   "silent": false,
-  "testEnvironment": "node"
+  "testEnvironment": "node",
+  "moduleNameMapper": {
+    "^src/(.*)$": "<rootDir>/src/$1"
+  }
 }
-
