@@ -10,7 +10,6 @@ describe('AppController (e2e)', () => {
   beforeEach(async () => {
     testSetup = await TestSetup.create(AppModule);
 
-    // Create a test user first
     const userData = {
       name: 'testuser',
       email: 'test@example.com',
@@ -22,7 +21,15 @@ describe('AppController (e2e)', () => {
       .send(userData);
 
     userId = userResponse.body.id;
-    authToken = userResponse.body.token;
+
+    const loginResponse = await request(testSetup.app.getHttpServer())
+      .post('/auth/login')
+      .send({
+        email: userData.email,
+        password: userData.password,
+      });
+
+    authToken = loginResponse.body.accessToken;
   });
 
   afterEach(async () => {
@@ -54,13 +61,12 @@ describe('AppController (e2e)', () => {
       .send(testTask)
       .expect(201)
       .expect((res) => {
-        // check that response matches what we sent
         expect(res.body.title).toBe(testTask.title);
         expect(res.body.description).toBe(testTask.description);
         expect(res.body.status).toBe(testTask.status);
-        expect(res.body.userId).toBe(testTask.userId); // Fixed this line
 
-        // check auto-generated fields
+        expect(res.body.userId).toBe(userId);
+
         expect(res.body).toHaveProperty('id');
         expect(res.body).toHaveProperty('createdAt');
         expect(res.body).toHaveProperty('updatedAt');
