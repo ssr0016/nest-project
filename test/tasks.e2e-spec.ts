@@ -9,27 +9,6 @@ describe('AppController (e2e)', () => {
 
   beforeEach(async () => {
     testSetup = await TestSetup.create(AppModule);
-
-    const userData = {
-      name: 'testuser',
-      email: 'test@example.com',
-      password: 'password123',
-    };
-
-    const userResponse = await request(testSetup.app.getHttpServer())
-      .post('/auth/register')
-      .send(userData);
-
-    userId = userResponse.body.id;
-
-    const loginResponse = await request(testSetup.app.getHttpServer())
-      .post('/auth/login')
-      .send({
-        email: userData.email,
-        password: userData.password,
-      });
-
-    authToken = loginResponse.body.accessToken;
   });
 
   afterEach(async () => {
@@ -39,6 +18,12 @@ describe('AppController (e2e)', () => {
   afterAll(async () => {
     await testSetup.teardown();
   });
+
+  const userData = {
+    name: 'testuser',
+    email: 'test@example.com',
+    password: 'password123',
+  };
 
   const createTestTask = () => ({
     title: 'testing',
@@ -53,6 +38,21 @@ describe('AppController (e2e)', () => {
   });
 
   it('/tasks (POST)', async () => {
+    const userResponse = await request(testSetup.app.getHttpServer())
+      .post('/auth/register')
+      .send(userData);
+
+    userId = userResponse.body.id;
+
+    const loginResponse = await request(testSetup.app.getHttpServer())
+      .post('/auth/login')
+      .send({
+        email: userData.email,
+        password: userData.password,
+      });
+
+    authToken = loginResponse.body.accessToken;
+
     const testTask = createTestTask();
 
     await request(testSetup.app.getHttpServer())
